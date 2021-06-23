@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import { View, Text } from 'react-native';
+import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import LandingPage from './components/auth/LandingPage'
 import { createStackNavigator } from '@react-navigation/stack';
@@ -19,18 +20,64 @@ const firebaseConfig = {
   measurementId: "G-W92XEH76GT"
 };
 
-if(firebase.apps.length === 0){
+if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig)
 }
 
-export default function App() {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName = "Landing">
-        <Stack.Screen name="Landing" component={LandingPage} options={{headerShown : false}} />
-        <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="Login" component={Login} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+export class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false
+    }
+  }
+
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (!user) {
+        this.setState({
+          loggedIn: false,
+          loaded: true
+        })
+      } else {
+        this.setState({
+          loggedIn: true,
+          loaded: true
+        })
+      }
+    })
+  }
+
+
+  render() {
+    const { loggedIn, loaded } = this.state;
+    if (!loaded) {
+      return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Text>Loading</Text>
+        </View>
+      )
+    }
+
+    if (!loggedIn) {
+      return (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Landing">
+            <Stack.Screen name="Landing" component={LandingPage} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="Login" component={Login} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )
+    }
+
+
+    return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Text>User is In</Text>
+        </View>
+    )
+  }
 }
+
+export default App;
