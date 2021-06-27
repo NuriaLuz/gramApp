@@ -7,6 +7,13 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as firebase from 'firebase'
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import { Provider } from 'react-redux'
+import { createStoreHook, applyMiddleware, createStore } from 'redux';
+import rootReducer from './redux/reducers';
+import thunk from 'redux-thunk';
+import Main from './components/Main'
+
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
 
@@ -73,9 +80,9 @@ export class App extends Component {
 
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <Text>User is In</Text>
-        </View>
+      <Provider store={store}>
+        <Main />
+      </Provider>
     )
   }
 }
