@@ -23,6 +23,7 @@ export default function Save(props) {
 
         const taskCompleted = () => {
             task.snapshot.ref.getDownloadURL().then((snapshot) => {
+                savePostData(snapshot)
                 console.log(snapshot)
             })
         };
@@ -31,15 +32,28 @@ export default function Save(props) {
             console.log(snapshot)
         };
 
-        task.on("state_changed", taskProgress, taskCompleted, taskError);
+        task.on("state_changed", taskProgress, taskError, taskCompleted);
     }
+
+    const savePostData = (downloadURL) =>
+        firebase.firestore()
+            .collection('posts')
+            .doc(firebase.auth().currentUser.uid)
+            .collection("userPosts")
+            .add({
+                downloadURL,
+                caption,
+                creation: firebase.firestore.FieldValue.serverTimestamp()
+            }).then((function () {
+                props.navigation.popToTop()
+            }))
 
     return (
         <View style={{ flex: 1 }}>
             <Image source={{ uri: props.route.params.image }} />
             <TextInput
                 placeholder="Write a Caption . . ."
-                onChange={(caption) => setCaption(caption)}
+                onChangeText={(caption) => setCaption(caption)}
             />
 
             <Button
@@ -48,4 +62,9 @@ export default function Save(props) {
 
         </View>
     )
+
 }
+
+
+
+
