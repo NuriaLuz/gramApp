@@ -12,6 +12,7 @@ import { createStoreHook, applyMiddleware, createStore } from 'redux';
 import rootReducer from './redux/reducers';
 import thunk from 'redux-thunk';
 import Main from './components/Main'
+import Add from './components/main/Add'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -73,6 +74,7 @@ export class App extends Component {
             <Stack.Screen name="Landing" component={LandingPage} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} />
             <Stack.Screen name="Login" component={Login} />
+
           </Stack.Navigator>
         </NavigationContainer>
       )
@@ -81,7 +83,12 @@ export class App extends Component {
 
     return (
       <Provider store={store}>
-        <Main />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Main">
+            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+            <Stack.Screen name="Add" component={Add} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     )
   }
