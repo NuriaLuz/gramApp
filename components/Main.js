@@ -7,6 +7,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import Feed from './main/Feed';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import Profile from './main/Profile'
+import Search from './main/Search';
 
 const Tab = createMaterialBottomTabNavigator();
 const EmptyScreen = () => {
@@ -26,6 +27,12 @@ export class Main extends Component {
                 <Tab.Screen name="Feed" component={Feed} options={{
                     tabBarIcon: ({ color, size }) => (
                         <MaterialCommunityIcons name="home" color={color} size={26} />
+                    ),
+                }} />
+
+                <Tab.Screen name="Search" component={Search} options={{
+                    tabBarIcon: ({ color, size }) => (
+                        <MaterialCommunityIcons name="magnify" color={color} size={26} />
                     ),
                 }} />
 
