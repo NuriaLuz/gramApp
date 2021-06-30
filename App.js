@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { View, Text } from 'react-native';
 import React, { Component } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +7,7 @@ import * as firebase from 'firebase'
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import { Provider } from 'react-redux'
-import { createStoreHook, applyMiddleware, createStore } from 'redux';
+import {applyMiddleware, createStore } from 'redux';
 import rootReducer from './redux/reducers';
 import thunk from 'redux-thunk';
 import Main from './components/Main'
